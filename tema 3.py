@@ -1,8 +1,9 @@
-meniu = ['papanasi'] * 10 + ['ceafa'] * 3 + ["guias"] * 6
+meniu = ['papanasi'] * 10 + ['ceafa'] * 3 + ['guias'] * 6
 preturi = [["papanasi", 7], ["ceafa", 10], ["guias", 5]]
-studenti = ["Liviu", "Ion", "George", "Ana", "Florica"]  # coada FIFO
-comenzi = ["guias", "ceafa", "ceafa", "papanasi", "ceafa"]  # coada FIFO
-tavi = ["tava"] * 7  # stiva LIFO
+preturi_dict = {produs: pret for produs, pret in preturi}  # Transformăm `preturi` într-un dicționar
+studenti = ["Liviu", "Ion", "George", "Ana", "Florica"]
+comenzi = ["guias", "ceafa", "ceafa", "papanasi", "ceafa"]
+tavi = ["tava"] * 7
 istoric_comenzi = []
 
 print("Procesarea comenzilor:")
@@ -17,16 +18,32 @@ for student in studenti[:]:
             if tavi:
                 tavi.pop()
 
-print("\nInventar:")
+inventar_comenzi = {}
 for produs in set(istoric_comenzi):
-    print(f"S-au comandat {istoric_comenzi.count(produs)} {produs}.")
+    inventar_comenzi[produs] = istoric_comenzi.count(produs)
+print("\nInventar:")
+for produs in inventar_comenzi:
+    print(f"S-au comandat {inventar_comenzi[produs]} {produs}.")
 print(f"Mai sunt {len(tavi)} tavi.")
+stocuri = {}
 for produs in ["ceafa", "papanasi", "guias"]:
-    print(f"Mai este {produs}: {produs in meniu}.")
+    stocuri[produs] = produs in meniu
+for produs in stocuri:
+    print(f"Mai este {produs}: {stocuri[produs]}.")
 
-total_incasari = sum(preturi[produs] for produs in istoric_comenzi)
-produse_ieftine = [produs for produs, pret in preturi.items() if pret <= 7]
+total_incasari = 0
+for produs in istoric_comenzi:
+    total_incasari += preturi_dict[produs]
+
+produse_ieftine = []
+
+for produs, pret in preturi_dict.items():
+    if pret <= 7:
+        produse_ieftine.append(produs)
 
 print("\nFinanțe:")
 print(f"Cantina a încasat: {total_incasari} lei.")
 print("Produse care costă cel mult 7 lei:", produse_ieftine)
+
+
+
