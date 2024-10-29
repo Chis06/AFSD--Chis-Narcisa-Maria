@@ -44,6 +44,3 @@ for produs, pret in preturi_dict.items():
 print("\nFinanțe:")
 print(f"Cantina a încasat: {total_incasari} lei.")
 print("Produse care costă cel mult 7 lei:", produse_ieftine)
-
-
-
